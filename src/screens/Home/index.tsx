@@ -43,7 +43,13 @@ export function Home() {
   function handleFilterLoginData() {
     // Filter results inside data, save with setSearchListData
     if (searchText != '') {
-      let filteredData = data.filter((text) => text.service_name === searchText);
+      let filteredData = data.filter((data) => {
+        const isValid = data.service_name.toLowerCase().includes(searchText.toLowerCase());
+
+        if (isValid) {
+          return data;
+        }
+      });
       setSearchListData(filteredData);
     } else {
       setSearchListData(data);
@@ -52,7 +58,11 @@ export function Home() {
 
   function handleChangeInputText(text: string) {
     // Update searchText value
-    setSearchText(text);
+    if (!text) {
+      setSearchListData(data);
+    } else {
+      setSearchText(text);
+    }
   }
 
   useFocusEffect(useCallback(() => {
